@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Enterprise AI CTO briefing">
+    <title>Enterprise AI CTO Brief</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+      :root { color-scheme: light; font-family: Arial, sans-serif; }
+      body { max-width: 980px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: #172033; line-height: 1.6; }
+      a { color: #0563c1; }
+      img { max-width: 100%; height: auto; }
+      pre { overflow-x: auto; padding: 1rem; background: #f3f5f7; border-radius: 8px; }
+      code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+      blockquote { margin-left: 0; padding-left: 1rem; border-left: 4px solid #0b7285; color: #44536a; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: .6rem; border: 1px solid #d8dee8; text-align: left; }
+      #error { color: #b42318; }
+    </style>
+  </head>
+  <body>
+    <main id="content" aria-live="polite">Loading briefing…</main>
+    <p id="error" hidden></p>
+    <script>
+      const markdownFile = 'jpmorgan_enterprise_ai_cto_brief.md';
+      const content = document.getElementById('content');
+      const error = document.getElementById('error');
+
+      fetch(markdownFile)
+        .then((response) => {
+          if (!response.ok) throw new Error(`Could not load ${markdownFile} (${response.status})`);
+          return response.text();
+        })
+        .then((markdown) => {
+          content.innerHTML = marked.parse(markdown, { gfm: true });
+          document.title = content.querySelector('h1')?.textContent || document.title;
+        })
+        .catch((reason) => {
+          content.textContent = 'The briefing could not be loaded.';
+          error.textContent = `${reason.message}. Open the Markdown source directly.`;
+          error.hidden = false;
+        });
+    </script>
+  </body>
+</html>
